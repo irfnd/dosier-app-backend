@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dosier-app-updk",
+  "private_key_id": "f67ed9061cd63830e8a01667ad26d0b6cd095cee",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC5Y5Kmf/NpcKdn\n6UJdXkNKl/YRd14MkBDtNd4KnYAR+NJjz4ztDYGBkM5MlhklwkQE5diOlW+Vf8DA\nGztGjnZtDCnmsmIp6NPhoN8W0a4JdMI0k9a9qWZe5up7d03CWXQlxC+h+znzgpT1\nj9wfsGM4igt4qaSa7Vc+e7vEJcHAX6SiAdiwf0IUpMRh4QOtiA+4BBTdoRZSaJb4\nnRjQTvQqKhwFbdkf2VIBtDgKkEYbFx/mpCa1LPpKgz4OOmw6adXLQEhrxs0o0pyq\n+PbKrYcs6m3hD8OnEJC2NmGYTNf3pDHpoBZe7WsHQf3mat95HHRV+fklCt4dVlIz\nNn1qj2oTAgMBAAECggEAI/+33GkAJTtg5oafAm5pdrSnbaDWPG5FOyq4oSsQUW0V\nvZfx754txbEOvkRvQavFdYYEVTujXU5faW5gRkUnrekswcVl1mmFq0yHxXCV8PQh\nOgBzNIUOgeMpKSxzhwfDzAmajkOwbx6uOjjjL6wauEHmFFoswoDP7iwsu9vxEZ+s\nRitzDZ67eeDiBzTAkz89O6gy1wj+jorjXFD5Vgi98NkJ80GCaH/yJsSyvWRmvW1A\nUDoQE4N8HS+bSUodctFm//szwZpI9WTubbEBiLHVy/ch3kKD6tj/0Gc+5aDEK0mU\noOILbz6iPE1Jrdk/NJ0hYGeirlJGFDhjoE/JSx8nQQKBgQDb45LV/Zp4SuGXaY2S\ng5NdacTMkV9oq/Y6OwWmm9gB+uaTuXoFVJDBQYFcmXQLn/sMrv2+lF3hMyiHSp2s\n4WarkwudgpF7qGoNmqUJjP9l8GcJt6s+gOMeBfJR0LtOXgV65Vqa9nkA3EV3poMR\nSx1OMBM67jJ/OFVWzyQY3e14wwKBgQDX1ZKsGMRWteumyuM83I1UTeWDdIhgDQLC\nTbz9eEuTZ6ZyxC2l+A4idXg6Y5G0eDaNp9nl+/b523QhpOL6jSL+GMeuzB6JEbsU\nV4K7mZWJryhO2cO/QgADGGgfxkmvqLZVSEqLg+6m3C4r/CznXjqSn92/0wyVpCO0\nsCnbN5y0cQKBgQDKHrCtNNTVd/dPZ33zzDAcMInuhD4QB+loczJpiF0QzOE/rsED\nv0zj52OSi5eIzABHE1843EZDJ/Q8EBFJhVMLqTmHCirSYOdDJABJ/CoTONxtqT+m\nT3D0+wBXxic2DOS6p7IWOTLW4KKWLh/SOJpycWxrweH24QBIsFT86ppLYwKBgCEE\n0V12pILHbfekTkM/Une1OwlzSHG5S9TB48m7H4S7dKFWFc2wNylaYzw7g0zinyXo\nqdMfStdKlWeYPAkskk/hJps9Kua5Sa+A+8ULZ+8aVsZJVkLqK+pNT5Cc2yT+YHaH\niq/xTQ9F2+Jqv8vdhIRt5JS2CtTRuYyo7p5U0aphAoGAHmcgyK6xT8Gi14Ns2xXQ\nirotYlawP89RAgAZyDVxegoqoSch/wP7J2OgY9Kb0Jf/0kh8Cf5vmNRzsn32WGiV\nmKB16lioS0HDnAsTqRD3nvvTd+rZ5MWZQQ6WAG/0UBOJAonDpCB7dKUvovdKhd00\n1ATgYxn+bOFB75WkU93MrLk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "superuser-dosierapp@dosier-app-updk.iam.gserviceaccount.com",
+  "client_id": "109266927613896871322",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/superuser-dosierapp%40dosier-app-updk.iam.gserviceaccount.com"
+}
