@@ -36,65 +36,6 @@ module.exports = {
 		}
 	},
 
-	findById: async (req, res) => {
-		const { nip, id } = req.params;
-		try {
-			const results = await Pegawai.findOne({ nip, "data_keluarga._id": id });
-			return res.ok({
-				success: true,
-				message: "Berhasil Mendapatkan Data",
-				content: results.data_keluarga,
-			});
-		} catch (err) {
-			return res.error({
-				success: false,
-				message: "Gagal Mendapatkan Data",
-				content: err,
-			});
-		}
-	},
-
-	update: async (req, res) => {
-		const { nip, id } = req.params;
-		try {
-			const pegawai = await Pegawai.findOne({ nip });
-			const data = pegawai.data_keluarga.filter((d) => d._id == id)[0];
-			await deleteFile(data.fileId);
-			const file = await uploadFile(
-				req.file,
-				`${req.body.filename} - ${pegawai.nama_lengkap}`,
-				data.folderId
-			);
-			const updateData = {
-				filename: req.body.filename,
-				keterangan: req.body.keterangan,
-				fileId: file.id,
-			};
-
-			await Pegawai.updateOne(
-				{ nip, "data_keluarga._id": id },
-				{
-					$set: {
-						"data_keluarga.$.filename": updateData.filename,
-						"data_keluarga.$.keterangan": updateData.keterangan,
-						"data_keluarga.$.fileId": updateData.url_file,
-					},
-				}
-			);
-			return res.ok({
-				success: true,
-				message: "Berhasil Memperbarui Data",
-				content: updateData,
-			});
-		} catch (err) {
-			return res.error({
-				success: false,
-				message: "Gagal Memperbarui Data",
-				content: err,
-			});
-		}
-	},
-
 	findAll: async (req, res) => {
 		const { nip } = req.params;
 		try {

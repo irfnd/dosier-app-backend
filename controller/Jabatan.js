@@ -40,6 +40,24 @@ module.exports = {
 		}
 	},
 
+	findAll: async (req, res) => {
+    const { nip } = req.params;
+    try {
+      const results = await Pegawai.findOne({ nip });
+      return res.ok({
+        success: true,
+        message: "Berhasil Mendapatkan Data",
+        content: results.jabatan,
+      });
+    } catch (err) {
+      return res.error({
+        success: false,
+        message: "Gagal Mendapatkan Data",
+        content: err,
+      });
+    }
+  },
+
 	findById: async (req, res) => {
 		const { nip, id } = req.params;
 		try {
