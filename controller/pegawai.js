@@ -1,6 +1,7 @@
 const {
 	uploadFile,
 	createFolder,
+	folderPegawaiBaru,
 	deleteFile,
 } = require("../service/google-api/googleapi");
 const Pegawai = require("../models/Pegawai");
@@ -18,27 +19,15 @@ module.exports = {
 				`${req.body.nip} - ${req.body.nama_lengkap}`,
 				process.env.FOLDER_ID
 			);
-			const folderFoto = await createFolder("Foto Profil", folderPegawai.id);
-			const folderJabatan = await createFolder("Jabatan", folderPegawai.id);
-			const folderKeluarga = await createFolder(
-				"Data Keluarga",
-				folderPegawai.id
-			);
-			const folderSKMasuk = await createFolder("SK Masuk", folderPegawai.id);
-			const folderSKTalenta = await createFolder(
-				"SK Talenta",
-				folderPegawai.id
-			);
-			const folderSKPHDP = await createFolder("SK PHDP", folderPegawai.id);
-			const folderDiklat = await createFolder("Diklat", folderPegawai.id);
-			const folderHukuman = await createFolder("Hukuman", folderPegawai.id);
+
+			const folderId = await folderPegawaiBaru(folderPegawai.id);
 
 			const foto =
 				req.file != undefined
 					? await uploadFile(
 							req.file,
 							`Foto Profil - ${req.body.nama_lengkap}`,
-							folderFoto.id
+							folderId.foto
 					  )
 					: "-";
 
@@ -55,14 +44,14 @@ module.exports = {
 				fotoId: foto.id || foto,
 				folderId: {
 					pegawai: folderPegawai.id,
-					foto: folderFoto.id,
-					jabatan: folderJabatan.id,
-					data_keluarga: folderKeluarga.id,
-					sk_masuk: folderSKMasuk.id,
-					sk_talenta: folderSKTalenta.id,
-					sk_phdp: folderSKPHDP.id,
-					diklat: folderDiklat.id,
-					hukuman: folderHukuman.id,
+					foto: folderId.foto,
+					jabatan: folderId.jabatan,
+					data_keluarga: folderId.data_keluarga,
+					sk_masuk: folderId.sk_masuk,
+					sk_talenta: folderId.sk_talenta,
+					sk_phdp: folderId.sk_phdp,
+					diklat: folderId.diklat,
+					hukuman: folderId.hukuman,
 				},
 				jabatan: [],
 				data_keluarga: [],

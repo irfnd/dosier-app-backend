@@ -49,6 +49,40 @@ module.exports = {
 		};
 	},
 
+	folderPegawaiBaru: async (folderPegawai) => {
+		const namaFolder = [
+			"Foto",
+			"Jabatan",
+			"Data Keluarga",
+			"SK Masuk",
+			"SK Talenta",
+			"SK PHDP",
+			"Diklat",
+			"Hukuman",
+		];
+
+		let folderId = {};
+
+		for (const folder of namaFolder) {
+			const { data } = await google
+				.drive({ version: "v3", auth })
+				.files.create({
+					resource: {
+						name: `${folder}`,
+						parents: [folderPegawai],
+						mimeType: "application/vnd.google-apps.folder",
+						supportsAllDrives: true,
+					},
+					fields: "id",
+				});
+			folderId = {
+				...folderId,
+				...{ [folder.toLowerCase().replace(" ", "_")]: data.id },
+			};
+		}
+		return folderId;
+	},
+
 	deleteFile: async (fileId) => {
 		await google.drive({ version: "v3", auth }).files.delete({
 			fileId: fileId,

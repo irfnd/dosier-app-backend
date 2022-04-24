@@ -1,10 +1,12 @@
-const { uploadFile, createFolder, deleteFile } = require("./googleapi");
+const { folderPegawaiBaru } = require("./googleapi");
 
-const test = async (foldername, parentid) => {
+const test = async (parentId) => {
 	try {
-		const { data } = await createFolder(foldername, parentid);
+		const data = await folderPegawaiBaru(parentId);
 		console.log(data);
 	} catch (err) {
 		console.error(err);
 	}
 };
+
+test("1d-XQN8C9JpEwj3DjphunpbD0rBzsDd23");
