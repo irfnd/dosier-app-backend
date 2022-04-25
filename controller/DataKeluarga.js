@@ -6,17 +6,21 @@ module.exports = {
 		const { nip } = req.params;
 		try {
 			const pegawai = await Pegawai.findOne({ nip });
-			const folder = await createFolder("Data Keluarga", pegawai.folderId);
-			const file = await uploadFile(
-				req.file,
-				`${req.body.filename} - ${pegawai.nama_lengkap}`,
-				folder.id
-			);
+
+			const file =
+				req.file !== undefined
+					? await uploadFile(
+							req.file,
+							`${req.body.filename} - ${pegawai.nama_lengkap}`,
+							pegawai.folderId.data_keluarga
+					  )
+					: "-";
+
 			const newData = {
 				filename: req.body.filename,
 				keterangan: req.body.keterangan,
-				fileId: file.id,
-				folderId: folder.id,
+				fileId: file.id || file,
+				folderId: pegawai.folderId.data_keluarga,
 			};
 			await Pegawai.findOneAndUpdate(
 				{ nip },
@@ -57,11 +61,13 @@ module.exports = {
 	findById: async (req, res) => {
 		const { nip, id } = req.params;
 		try {
-			const results = await Pegawai.findOne({ nip, "data_keluarga._id": id });
+			const results = await Pegawai.findOne({ nip }).select({
+				data_keluarga: { $elemMatch: { _id: id } },
+			});
 			return res.ok({
 				success: true,
 				message: "Berhasil Mendapatkan Data",
-				content: results.data_keluarga[0],
+				content: results.data_keluarga,
 			});
 		} catch (err) {
 			return res.error({
@@ -76,22 +82,28 @@ module.exports = {
 		const { nip, id } = req.params;
 
 		try {
-			const pegawai = await Pegawai.findOne({ nip, "data_keluarga._id": id });
-			if (req.file != undefined)
-				await deleteFile(pegawai.data_keluarga[0].fileId);
-			const fileKeluarga =
-				req.file != undefined
+			const data = await Pegawai.findOne({ nip });
+			const data_keluarga = data.data_keluarga.filter((j) => j._id == id);
+
+			if (data_keluarga[0].fileId !== "-") {
+				if (req.file !== undefined) {
+					await deleteFile(data_keluarga[0].fileId);
+				}
+			}
+
+			const fileDataKeluarga =
+				req.file !== undefined
 					? await uploadFile(
 							req.file,
-							`${req.body.filename} - ${pegawai.nama_lengkap}`,
-							pegawai.folderId.data_keluarga
+							`${req.body.filename} - ${data.nama_lengkap}`,
+							data.folderId.data_keluarga
 					  )
-					: "-";
+					: data_keluarga[0].fileId;
 
 			const updateData = {
 				filename: req.body.filename,
 				keterangan: req.body.keterangan,
-				fileId: fileKeluarga.id || pegawai.data_keluarga[0].fileId,
+				fileId: fileDataKeluarga.id || fileDataKeluarga,
 			};
 
 			await Pegawai.updateOne(
@@ -121,8 +133,12 @@ module.exports = {
 	delete: async (req, res) => {
 		const { nip, id } = req.params;
 		try {
-			const pegawai = await Pegawai.findOne({ nip, "data_keluarga._id": id });
-			await deleteFile(pegawai.data_keluarga[0].fileId);
+			const data = await Pegawai.findOne({ nip }).select({
+				data_keluarga: { $elemMatch: { _id: id } },
+			});
+			if (data.data_keluarga[0].fileId !== "-") {
+				await deleteFile(data.data_keluarga[0].fileId);
+			}
 
 			await Pegawai.updateOne(
 				{ nip, "data_keluarga._id": id },

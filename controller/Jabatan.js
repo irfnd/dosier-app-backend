@@ -6,11 +6,27 @@ module.exports = {
 		const { nip } = req.params;
 		try {
 			const pegawai = await Pegawai.findOne({ nip });
+			let filename;
+
+			if (req.file !== undefined) {
+				if (req.body.filename !== "") {
+					filename = req.body.filename;
+				} else {
+					filename = "Dokumen Jabatan";
+				}
+			} else {
+				if (req.body.filename !== "") {
+					filename = req.body.filename;
+				} else {
+					filename = "Dokumen Jabatan";
+				}
+			}
+
 			const file =
 				req.file !== undefined
 					? await uploadFile(
 							req.file,
-							`${req.body.filename} - ${pegawai.nama_lengkap}`,
+							`${filename} - ${req.body.jabatan} - ${pegawai.nama_lengkap}`,
 							pegawai.folderId.jabatan
 					  )
 					: "-";
@@ -20,7 +36,7 @@ module.exports = {
 				divisi: req.body.divisi,
 				aktif: req.body.aktif,
 				periode: req.body.periode,
-				filename: req.body.filename,
+				filename: filename,
 				keterangan: req.body.keterangan,
 				fileId: file.id || file,
 				folderId: pegawai.folderId.jabatan,
@@ -61,11 +77,13 @@ module.exports = {
 	findById: async (req, res) => {
 		const { nip, id } = req.params;
 		try {
-			const results = await Pegawai.findOne({ nip, "jabatan._id": id });
+			const results = await Pegawai.findOne({ nip }).select({
+				jabatan: { $elemMatch: { _id: id } },
+			});
 			return res.ok({
 				success: true,
 				message: "Berhasil Mendapatkan Data",
-				content: results.jabatan.filter((el) => el._id == id),
+				content: results.jabatan,
 			});
 		} catch (err) {
 			return res.error({
@@ -79,27 +97,45 @@ module.exports = {
 	update: async (req, res) => {
 		const { nip, id } = req.params;
 		try {
-			const data = await Pegawai.findOne({ nip, "jabatan._id": id });
+			const data = await Pegawai.findOne({ nip });
+			const jabatan = data.jabatan.filter((j) => j._id == id);
+			let filename;
 
-			if (data.jabatan[0].fileId !== "-") {
-				await deleteFile(data.jabatan[0].fileId);
+			if (req.file !== undefined) {
+				if (req.body.filename !== "") {
+					filename = req.body.filename;
+				} else {
+					filename = "Dokumen Jabatan";
+				}
+			} else {
+				if (req.body.filename !== "") {
+					filename = req.body.filename;
+				} else {
+					filename = "Dokumen Jabatan";
+				}
+			}
+
+			if (jabatan[0].fileId !== "-") {
+				if (req.file !== undefined) {
+					await deleteFile(jabatan[0].fileId);
+				}
 			}
 
 			const fileJabatan =
 				req.file !== undefined
 					? await uploadFile(
 							req.file,
-							`${req.filename} - ${data.nama_lengkap}`,
+							`${filename} - ${req.body.jabatan} - ${data.nama_lengkap}`,
 							data.folderId.jabatan
 					  )
-					: "-";
+					: jabatan[0].fileId;
 
 			const updateData = {
 				jabatan: req.body.jabatan,
 				divisi: req.body.divisi,
 				aktif: req.body.aktif,
 				periode: req.body.periode,
-				filename: req.file === undefined ? fileJabatan : req.body.filename,
+				filename: filename,
 				keterangan: req.body.keterangan,
 				fileId: fileJabatan.id || fileJabatan,
 			};
@@ -135,7 +171,9 @@ module.exports = {
 	delete: async (req, res) => {
 		const { nip, id } = req.params;
 		try {
-			const data = await Pegawai.findOne({ nip, "jabatan._id": id });
+			const data = await Pegawai.findOne({ nip }).select({
+				jabatan: { $elemMatch: { _id: id } },
+			});
 			if (data.jabatan[0].fileId !== "-") {
 				await deleteFile(data.jabatan[0].fileId);
 			}

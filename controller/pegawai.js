@@ -132,7 +132,9 @@ module.exports = {
 			const data = await Pegawai.findOne({ nip });
 
 			if (data.fotoId !== "-") {
-				await deleteFile(data.fotoId);
+				if (req.file !== undefined) {
+					await deleteFile(data.fotoId);
+				}
 			}
 
 			const foto =
@@ -142,7 +144,7 @@ module.exports = {
 							`Foto Profil - ${req.body.nama_lengkap}`,
 							data.folderId.foto
 					  )
-					: "-";
+					: data.fotoId;
 
 			const updateData = {
 				nip: req.body.nip,
